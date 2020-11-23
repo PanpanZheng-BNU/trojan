@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- 新 Bootstrap4 核心 CSS 文件 -->
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- bootstrap.bundle.min.js 用于弹窗、提示、下拉菜单，包含了 popper.min.js -->
+<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+
+<!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<title>弹出输入框的值</title>
+<script type="text/javascript">
+function SSLC(){
+ var DomainName = myform.dn.value; //使用id来获取input输入框的值
+
+ var SSLstring = `
+                <body>\
+                <center><h4><strong>SSL证书申请语句</strong></h4></center>\
+                <pre style="background-color:rgb(230,230,230)">\
+acme.sh --issue -d ${DomainName} --standalone -k ec-256 --force
+mkdir /data
+mkdir /data/${DomainName}
+acme.sh --installcert -d ${DomainName} --fullchainpath /data/${DomainName}/fullchain.crt --keypath /data/${DomainName}/privkey.key --ecc --force</pre>
+                </body>\
+                `;
+  document.getElementById("out1").innerHTML = SSLstring;
+};
+function nginxConf(){
+ var DomainName = myform.dn.value; //使用id来获取input输入框的值
+
+ var nginxstring = `
+                <body>\
+                <center><h4><strong>nginx配置内容</strong></h4></center>\
+                <pre style="background-color:rgb(230,230,230)">\
+cat >/etc/nginx/conf/conf.d/default.conf &lt;&lt;EOF
+ server {{
+   listen 80;
+   server_name ${DomainName};
+
+   ssl on;
+   ssl_certificate   /data/${DomainName}/fullchain.crt;
+   ssl_certificate_key  /data/${DomainName}/privkey.key;
+ ssl_ciphers                 TLS13-AES-256-GCM-SHA384:TLS13-CHACHA20-POLY1305-SHA256:TLS13-AES-128-GCM-SHA256:TLS13-AES-128-CCM-8-SHA256:TLS13-AES-128-CCM-SHA256:EECDH+CHACHA20:EECDH+CHACHA20-draft:EECDH+ECDSA+AES128:EECDH+aRSA+AES128:RSA+AES128:EECDH+ECDSA+AES256:EECDH+aRSA+AES256:RSA+AES256:EECDH+ECDSA+3DES:EECDH+aRSA+3DES:RSA+3DES:!MD5;
+   ssl_prefer_server_ciphers    on;
+   ssl_protocols                TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
+   ssl_session_cache            shared:SSL:50m;
+   ssl_session_timeout          1d;
+   ssl_session_tickets          on;
+   location / {{
+       proxy_pass       http://127.0.0.1:25500;
+       proxy_set_header Host      $host;
+       proxy_set_header X-Real-IP $remote_addr;
+}}
+}}
+EOF</pre>
+                </body>`;
+  document.getElementById("out2").innerHTML = nginxstring;
+};
+function trojanConf(){
+  var DomainName = myform.dn.value; //使用id来获取input输入框的值
+  var pwd = myform.pwd.value;
+
+  var trojanstring = `
+                 <body>\
+                 <center><h4><strong>trojan配置内容</strong></h4></center>\
+                 <pre style="background-color:rgb(230,230,230)">\
+cat >/usr/local/etc/trojan/config.json &lt;&lt;EOF
+{
+   "run_type": "server",
+   "local_addr": "0.0.0.0",
+   "local_port": 443,
+   "remote_addr": "127.0.0.1",
+   "remote_port": 80,
+   "password": [
+       "${pwd}",
+       ""
+   ],
+   "log_level": 1,
+   "ssl": {
+     "cert": "/data/${DomainName}/fullchain.crt",
+       "key": "/data/${DomainName}/privkey.key",
+       "key_password": "",
+       "cipher": "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256",
+       "prefer_server_cipher": true,
+       "alpn": [
+           "http/1.1"
+       ],
+       "reuse_session": true,
+       "session_ticket": false,
+       "session_timeout": 600,
+       "plain_http_response": "",
+       "curves": "",
+       "dhparam": ""
+   },
+   "tcp": {
+       "prefer_ipv4": false,
+       "no_delay": true,
+       "keep_alive": true,
+       "fast_open": false,
+       "fast_open_qlen": 20
+   },
+   "mysql": {
+       "enabled": false,
+       "server_addr": "127.0.0.1",
+       "server_port": 3306,
+       "database": "trojan",
+       "username": "trojan",
+       "password": ""
+   }
+}
+EOF`
+document.getElementById("out3").innerHTML = trojanstring;
+}
+
+
+</script>
+</head>
+
+<body>
+  <div class = "container-fluid">
+<form name="myform">
+  <div class="form-group">
+    <label for="Domain Name">Domain Name:</label>
+    <input type="text" class="form-control" id="dn">
+  </div>
+  <div class="form-group">
+    <label for="pwd">Password:</label>
+    <input type="password" class="form-control" id="pwd">
+  </div>
+</form>
+</div>
+
+<center>
+<div class="btn-group">
+  <button type="button" class="btn btn-outline-primary" onclick="SSLC()">SSL证书申请</button>
+  <button type="button" class="btn btn-outline-primary" onclick="nginxConf()">nginx配置</button>
+  <button type="button" class="btn btn-outline-primary" onclick="trojanConf()">Trojan配置</button>
+</div>
+</center>
+
+
+
+
+<br>
+<div class="container-fluid">
+<p id="out1"></p>
+<br>
+<p id="out2"></p>
+<br>
+<p id="out3"></p>
+</div>
+</body>
+</html>
+</html>
+
+<script>
+    // 拿到输入的值，输出到指定ID的元素中
+    function outInfo(){
+    var msg = document.getElementById("in").value;
+    alert(msg);
+    document.getElementById("p1").innerHTML = msg;
+  }
+</script>
