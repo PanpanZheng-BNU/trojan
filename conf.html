@@ -21,7 +21,7 @@ function SSLC(){
 
  var SSLstring = `
                 <body>\
-                <center><h4><strong>SSL证书申请语句</strong></h4></center>\
+                <center><h4 style="font-family:UDDi-B"><strong>SSL证书申请语句</strong></h4></center>\
                 <pre style="background-color:rgb(230,230,230)">\
 acme.sh --issue -d ${DomainName} --standalone -k ec-256 --force
 mkdir /data
@@ -36,7 +36,7 @@ function nginxConf(){
 
  var nginxstring = `
                 <body>\
-                <center><h4><strong>nginx配置内容</strong></h4></center>\
+                <center><h4 style="font-family:UDDi-B"><strong>nginx配置内容</strong></h4></center>\
                 <pre style="background-color:rgb(230,230,230)">\
 cat >/etc/nginx/conf/conf.d/default.conf &lt;&lt;EOF
  server {{
@@ -68,7 +68,7 @@ function trojanConf(){
 
   var trojanstring = `
                  <body>\
-                 <center><h4><strong>trojan配置内容</strong></h4></center>\
+                 <center><h4 style="font-family:UDDi-B"><strong>trojan配置内容</strong></h4></center>\
                  <pre style="background-color:rgb(230,230,230)">\
 cat >/usr/local/etc/trojan/config.json &lt;&lt;EOF
 {
@@ -139,11 +139,11 @@ document.getElementById("out3").innerHTML = trojanstring;
     <center><h1 style="font-family:UDDi-B">配置生成</h1></center>
 <form name="myform">
   <div class="form-group">
-    <label for="Domain Name" style="font-family:SST2">Domain Name:</label>
+    <label for="Domain Name" style="font-family:UDDi-B">域名：</label>
     <input type="text" class="form-control" id="dn">
   </div>
   <div class="form-group">
-    <label for="pwd" style="font-family:SST2">Password:</label>
+    <label for="pwd" style="font-family:UDDi-B">密碼：</label>
     <input type="password" class="form-control" id="pwd">
   </div>
 </form>
