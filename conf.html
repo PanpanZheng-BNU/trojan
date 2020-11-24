@@ -13,6 +13,7 @@
 <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
 <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
+
 <title>脚本生成</title>
 <script type="text/javascript">
 function SSLC(){
@@ -116,22 +117,33 @@ cat >/usr/local/etc/trojan/config.json &lt;&lt;EOF
 EOF`
 document.getElementById("out3").innerHTML = trojanstring;
 }
-
-
 </script>
+<style>
+@font-face {
+  font-family: 'UDDi-B';
+  src: url('UDDigiKyokashoN-B.ttc') format('truetype');/*non-IE*/
+}
+
+@font-face {
+  font-family: 'SST2';
+  src: url('SSTTypewriter-Bd.OTF') format('truetype');/*non-IE*/
+}
+</style>
+
+</style>
 </head>
 
 <body>
   <div class = "container-fluid">
     <br>
-    <center><h1 style="font-family:UD Digi Kyokasho NP-B">配置生成</h1></center>
+    <center><h1 style="font-family:UDDi-B">配置生成</h1></center>
 <form name="myform">
   <div class="form-group">
-    <label for="Domain Name" style="font-family:SST">Domain Name:</label>
+    <label for="Domain Name" style="font-family:SST2">Domain Name:</label>
     <input type="text" class="form-control" id="dn">
   </div>
   <div class="form-group">
-    <label for="pwd" style="font-family:SST">Password:</label>
+    <label for="pwd" style="font-family:SST2">Password:</label>
     <input type="password" class="form-control" id="pwd">
   </div>
 </form>
