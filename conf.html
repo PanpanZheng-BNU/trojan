@@ -41,7 +41,7 @@ function nginxConf(){
                 <center><h4 style="font-family:UDDi-B"><strong>nginx配置内容</strong></h4></center>\
                 <pre style="background-color:rgb(230,230,230)">\
 cat >/etc/nginx/conf/conf.d/default.conf &lt;&lt;EOF
- server {{
+ server {
    listen 80;
    server_name ${DomainName};
 
@@ -54,12 +54,12 @@ cat >/etc/nginx/conf/conf.d/default.conf &lt;&lt;EOF
    ssl_session_cache            shared:SSL:50m;
    ssl_session_timeout          1d;
    ssl_session_tickets          on;
-   location / {{
+   location / {
        proxy_pass       http://127.0.0.1:25500;
        proxy_set_header Host      $host;
        proxy_set_header X-Real-IP $remote_addr;
-}}
-}}
+}
+}
 EOF</pre>
                 </body>`;
   document.getElementById("out2").innerHTML = nginxstring;
