@@ -25,7 +25,10 @@ function SSLC(){
                 <body>\
                 <center><h4 style="font-family:UDDi-B"><strong>SSL證書申請語句</strong></h4></center>\
                 <pre style="background-color:rgb(230,230,230)">\
+# ipv4
 acme.sh --issue -d ${DomainName} --standalone -k ec-256 --force
+# ipv6
+acme.sh --issue -d ${DomainName} --standalone -k ec-256 --force --listen-v6
 mkdir /data
 mkdir /data/${DomainName}
 acme.sh --installcert -d ${DomainName} --fullchainpath /data/${DomainName}/fullchain.crt --keypath /data/${DomainName}/privkey.key --ecc --force</pre>
